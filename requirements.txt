@@ -1,0 +1,2 @@
+xmlschema==1.2.5
+xmltodict==0.12.0
