@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="WINDOWS-1251"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+  <xs:complexType name="zglv_type">
+    <xs:sequence>
+      <xs:element name="VERSION" type="xs:string" />
+      <xs:element name="DATA" type="xs:date" />
+      <xs:element name="FILENAME" type="xs:string" />
+      <xs:element name="SD_Z" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="schet_type">
+    <xs:sequence>
+      <xs:element name="CODE" type="xs:string" />
+      <xs:element name="CODE_MO" type="xs:string" />
+      <xs:element name="YEAR" type="xs:string" />
+      <xs:element name="MONTH" type="xs:string" />
+      <xs:element name="NSCHET" type="xs:string" />
+      <xs:element name="DSCHET" type="xs:date" />
+      <xs:element name="PLAT" type="xs:string" minOccurs="0" />
+      <xs:element name="SUMMAV" type="money-type" minOccurs="0" />
+      <xs:element name="COMENTS" minOccurs="0" />
+      <xs:element name="SUMMAP" type="money-type" minOccurs="0" />
+      <xs:element name="SANK_MEK" type="money-type" minOccurs="0" />
+      <xs:element name="SANK_MEE" type="money-type" minOccurs="0" />
+      <xs:element name="SANK_EKMP" type="money-type" minOccurs="0" />
+      <xs:element name="DISP" type="xs:string" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="pacient_type">
+    <xs:sequence>
+      <xs:element name="ID_PAC" type="xs:string" />
+      <xs:element name="VPOLIS" type="xs:string" />
+      <xs:element name="SPOLIS" minOccurs="0" type="xs:string" />
+      <xs:element name="NPOLIS" type="xs:string" />
+      <xs:element name="ST_OKATO" minOccurs="0" type="xs:string" />
+      <xs:element name="SMO" minOccurs="0" type="xs:string" />
+      <xs:element name="SMO_OGRN" minOccurs="0" type="xs:string" />
+      <xs:element name="SMO_OK" minOccurs="0" type="xs:string" />
+      <xs:element name="SMO_NAM" minOccurs="0" type="xs:string" />
+      <xs:element name="INV" minOccurs="0" type="xs:string" />
+      <xs:element name="MSE" minOccurs="0" type="xs:string" />
+      <xs:element name="NOVOR" type="xs:string" />
+      <xs:element name="VNOV_D" minOccurs="0" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>
