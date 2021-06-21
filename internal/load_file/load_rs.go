@@ -6,23 +6,22 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"load_rs/configs"
+	"load_rs/internal/xml_parse"
+	"load_rs/internal/xsd_validation"
 	"log"
 	"os"
 	"path/filepath"
-	"load_rs/internal/xml_parse"
-	"load_rs/internal/xsd_validation"
 )
 
-func LoadRS(filename string, i int) {
+func LoadRS(file string, i int) {
 	// Распаковка, валидация реестров
 	// Open a zip archive for reading.
-	folder := configs.GetFolder()
-	r, err := zip.OpenReader(filepath.Join(folder, filename))
+	r, err := zip.OpenReader(file)
 	if err != nil {
 		log.Fatal(err)
 		return
 	}
+	defer os.Remove(file)
 	defer r.Close()
 
 	// Iterate through the files in the archive,
@@ -58,6 +57,6 @@ func LoadRS(filename string, i int) {
 		fmt.Sprintf("%s", string(json_data))
 
 	}
-	log.Printf("Файл %s обработан!", filename)
+	log.Printf("Файл %s обработан!", file)
 	return
 }
