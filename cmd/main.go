@@ -3,13 +3,13 @@ package main
 import (
 	"fmt"
 	"github.com/rjeczalik/notify"
+	"load_rs/configs"
+	"load_rs/internal/load_file"
+	"log"
 	"path/filepath"
 	"runtime"
 	"sync"
 	"time"
-	"load_rs/internal/load_file"
-	"load_rs/configs"
-	"log"
 )
 
 
@@ -47,7 +47,6 @@ func main() {
 	for i := 0; i < 100; i++ {
 		wg.Add(1)
 		go worker(file_chan, &wg, i)
-		fmt.Println("go worker ", i)
 	}
 
 	for _, filename := range files {

@@ -9,6 +9,8 @@ import (
 	"os"
 )
 
+
+
 func ValidateXSD(reestr *io.Reader, xsdfile *os.File) error {
 	xsdbuf, err := ioutil.ReadAll(xsdfile)
 	if err != nil {
