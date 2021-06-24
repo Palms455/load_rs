@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="WINDOWS-1251"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="PERS_LIST">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ZGLV">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="VERSION" type="xs:string" />
+              <xs:element name="DATA" type="xs:date" />
+              <xs:element name="FILENAME" type="xs:string" />
+              <xs:element name="FILENAME1" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PERS" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ID_PAC" type="xs:string" />
+              <xs:element name="FAM" type="xs:string" minOccurs="0" />
+              <xs:element name="IM" type="xs:string" minOccurs="0" />
+              <xs:element name="OT" type="xs:string" minOccurs="0" />
+              <xs:element name="W" type="xs:string" />
+              <xs:element name="DR" type="xs:date" />
+              <xs:element name="DOST" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+              <xs:element name="TEL" type="xs:string" minOccurs="0" />
+              <xs:element name="FAM_P" type="xs:string" minOccurs="0" />
+              <xs:element name="IM_P" type="xs:string" minOccurs="0" />
+              <xs:element name="OT_P" type="xs:string" minOccurs="0" />
+              <xs:element name="W_P" type="xs:string" minOccurs="0" />
+              <xs:element name="DR_P" type="xs:string" minOccurs="0" />
+              <xs:element name="DOST_P" type="xs:string" minOccurs="0" />
+              <xs:element name="MR" type="xs:string" minOccurs="0" />
+              <xs:element name="DOCTYPE" type="xs:string" minOccurs="0" />
+              <xs:element name="DOCSER" type="xs:string" minOccurs="0" />
+              <xs:element name="DOCNUM" type="xs:string" minOccurs="0" />
+              <xs:element name="DOCDATE" type="xs:string" minOccurs="0" />
+              <xs:element name="DOCORG" type="xs:string" minOccurs="0" />
+              <xs:element name="SNILS" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value="(\d){3}-(\d){3}-(\d){3} (\d){2}" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="OKATOG" type="xs:string" minOccurs="0" />
+              <xs:element name="OKATOP" type="xs:string" minOccurs="0" />
+              <xs:element name="COMENTP" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+    <xs:unique name="uniqueID_PAC">
+      <xs:selector xpath="./PERS" />
+      <xs:field xpath="ID_PAC" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>
