@@ -348,7 +348,7 @@ func (v *Schet) UnmarshalJSON(data []byte) error {
 func (v *Schet) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson8d03ee45DecodeXmlParseInternalXmlParse1(l, v)
 }
-func easyjson8d03ee45DecodeXmlParseInternalXmlParse2(in *jlexer.Lexer, out *RsFile) {
+func easyjson8d03ee45DecodeXmlParseInternalXmlParse2(in *jlexer.Lexer, out *RsData) {
 	isTopLevel := in.IsStart()
 	if in.IsNull() {
 		if isTopLevel {
@@ -381,7 +381,7 @@ func easyjson8d03ee45DecodeXmlParseInternalXmlParse2(in *jlexer.Lexer, out *RsFi
 		in.Consumed()
 	}
 }
-func easyjson8d03ee45EncodeXmlParseInternalXmlParse2(out *jwriter.Writer, in RsFile) {
+func easyjson8d03ee45EncodeXmlParseInternalXmlParse2(out *jwriter.Writer, in RsData) {
 	out.RawByte('{')
 	first := true
 	_ = first
@@ -399,26 +399,26 @@ func easyjson8d03ee45EncodeXmlParseInternalXmlParse2(out *jwriter.Writer, in RsF
 }
 
 // MarshalJSON supports json.Marshaler interface
-func (v RsFile) MarshalJSON() ([]byte, error) {
+func (v RsData) MarshalJSON() ([]byte, error) {
 	w := jwriter.Writer{}
 	easyjson8d03ee45EncodeXmlParseInternalXmlParse2(&w, v)
 	return w.Buffer.BuildBytes(), w.Error
 }
 
 // MarshalEasyJSON supports easyjson.Marshaler interface
-func (v RsFile) MarshalEasyJSON(w *jwriter.Writer) {
+func (v RsData) MarshalEasyJSON(w *jwriter.Writer) {
 	easyjson8d03ee45EncodeXmlParseInternalXmlParse2(w, v)
 }
 
 // UnmarshalJSON supports json.Unmarshaler interface
-func (v *RsFile) UnmarshalJSON(data []byte) error {
+func (v *RsData) UnmarshalJSON(data []byte) error {
 	r := jlexer.Lexer{Data: data}
 	easyjson8d03ee45DecodeXmlParseInternalXmlParse2(&r, v)
 	return r.Error()
 }
 
 // UnmarshalEasyJSON supports easyjson.Unmarshaler interface
-func (v *RsFile) UnmarshalEasyJSON(l *jlexer.Lexer) {
+func (v *RsData) UnmarshalEasyJSON(l *jlexer.Lexer) {
 	easyjson8d03ee45DecodeXmlParseInternalXmlParse2(l, v)
 }
 func easyjson8d03ee45DecodeXmlParseInternalXmlParse3(in *jlexer.Lexer, out *Rs) {

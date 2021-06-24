@@ -1,6 +1,16 @@
 package load_file
 
-import "os"
+import (
+	"os"
+	"path/filepath"
+	"log"
+)
+
+func GetFolder() string {
+	dir, _ := os.Getwd()
+	log.Println("CWD:", dir)
+	return filepath.Join(dir, "reestr")
+}
 
 func GetFiles(folder string) ([]string, error) {
 	// Получение списка файлов реестров

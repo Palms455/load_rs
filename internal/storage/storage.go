@@ -2,24 +2,22 @@ package storage
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/jackc/pgx/v4/pgxpool"
+	"load_rs/internal/config"
 	"load_rs/internal/xml_parse"
 	"log"
 	"os"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"path/filepath"
+	"encoding/json"
 )
 
 var pool *pgxpool.Pool
 var err error
 
-// urlExample := "postgres://username:password@localhost:5432/database_name"
-var Url = ""
-
 func init() {
-	pool, err = pgxpool.Connect(context.Background(), Url)
+	pool, err = pgxpool.Connect(context.Background(), config.MainConfig.DbAddr)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Unable to connect to database:", err)
 		os.Exit(1)
@@ -28,27 +26,27 @@ func init() {
 
 type RsFile struct {
 	Filename, Ftype, Mo, Tfoms, Period, Nn, Rsfile, Status string
-	Rs_data                                                xml_parse.RsFile
-	ErrorMsg                                               map[string]string
+	Rs_data xml_parse.RsData
+	ErrorMsg map[string]string
 }
 
 func (r *RsFile) GetFromFile(file string) {
 	rs := Rgx.FindStringSubmatch(file)
 	if len(rs) == 0 {
 		log.Fatalf("Файл %s не подходит для обработки", file)
-
 	}
 	r.Filename, r.Ftype, r.Mo, r.Tfoms, r.Period, r.Nn = rs[0], rs[1], rs[2], rs[3], rs[4], rs[5]
 	guid := uuid.New().String()
 	r.Rsfile = filepath.Join("reestr", "buf", guid, r.Filename)
 }
 
+
 func GetCurrentPeriod(period_match string) (int, error) {
 	var period int
 	err = pool.QueryRow(context.Background(),
 		"select id from rsj.period where id = $1 and is_open=True limit 1", period_match).Scan(&period)
 	if err != nil {
-		log.Println(err)
+		log.Printf("Ошибка при получении периода: %s", err)
 		return period, err
 	}
 	return period, err
@@ -61,7 +59,6 @@ func (r *RsFile) LoadPers(rs_id int) error {
 			`insert into rsj.inbufpers (pers, rsfile_id) values ($1, $2)`,
 			json_pers, rs_id)
 		if err != nil {
-			log.Fatal(err)
 			return err
 		}
 	}
@@ -75,12 +72,12 @@ func (r *RsFile) LoadZap(rs_id int) error {
 			`insert into rsj.inbufzap (zap, rsfile_id) values ($1, $2)`,
 			json_zap, rs_id)
 		if err != nil {
-			log.Fatal(err)
 			return err
 		}
 	}
 	return nil
 }
+
 
 func (r *RsFile) DeleteRs() error {
 	var rs_id int
@@ -88,8 +85,7 @@ func (r *RsFile) DeleteRs() error {
 		"select rs.id from rsj.inbufrs rs where lower(rs.filename) = lower($1)",
 		r.Filename).Scan(&rs_id)
 	if err != nil {
-		log.Println("get inbufrs")
-		log.Println(err)
+		log.Printf("Ошибка при получении id в rsj.inbufrs: %s", err)
 	}
 	if rs_id == 0 {
 		return nil
@@ -112,7 +108,7 @@ func (r *RsFile) DeleteRs() error {
 	_, err = pool.Exec(context.Background(), "delete from rsj.inbufrs rs where rs.id = $1", rs_id)
 	if err != nil {
 		log.Println("del inbufrs")
-		log.Fatal(err)
+		log.Println(err)
 	}
 	return nil
 }
@@ -144,15 +140,15 @@ func (r *RsFile) LoadRs() error {
 			r.Status,
 			r.Rsfile).Scan(&rs_id)
 		if err != nil {
-			fmt.Println(err)
+			log.Fatalf("Ошибка при вставке в rsj.inbufrs %s", err)
 			return err
 		}
 		if err := r.LoadPers(rs_id); err != nil {
-			log.Fatal(err)
+			log.Fatalf("Ошибка при вставке в rsj.inbufpers %s", err)
 			return err
 		}
 		if err := r.LoadZap(rs_id); err != nil {
-			log.Fatal(err)
+			log.Fatalf("Ошибка при вставке в rsj.inbufzap %s", err)
 			return err
 		}
 
@@ -172,10 +168,9 @@ func (r *RsFile) LoadRs() error {
 			r.Rsfile,
 			json_error).Scan(&rs_id)
 		if err != nil {
-			fmt.Println(err)
+			log.Fatalf("Ошибка при вставке в rsj.inbufrs %s", err)
 			return err
 		}
-
 	}
 	return nil
 }

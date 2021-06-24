@@ -149,13 +149,13 @@ type L struct {
 }
 
 
-type RsFile struct {
+type RsData struct {
 	Rs Rs
 	LFile L
 }
 
 
-func (rs_data *RsFile) XmlDecode(file *bytes.Buffer, ftype string)  {
+func (rs_data *RsData) XmlDecode(file *bytes.Buffer, ftype string)  {
 	decoder := xml.NewDecoder(file)
 	decoder.CharsetReader = charset.NewReaderLabel
 	if ftype == "L" {

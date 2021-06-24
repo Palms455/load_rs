@@ -37,7 +37,7 @@ func LoadRS(file string, i int) {
 	errArray := []string{}
 
 	// Iterate through the files in the archive,
-	rs_data := &xml_parse.RsFile{}
+	rs_data := &xml_parse.RsData{}
 	for _, f := range r.File {
 		log.Printf("Обработка файла %s", f.Name)
 
@@ -48,7 +48,7 @@ func LoadRS(file string, i int) {
 		defer reestr_file.Close()
 
 		xsd_name := string([]rune(f.Name)[0]) + ".xsd"
-		xsd_path := filepath.Join("configs/xsd", xsd_name)
+		xsd_path := filepath.Join("xsd", xsd_name)
 		xsd_file, err := os.Open(xsd_path)
 		if err != nil {
 			log.Printf("Не удалось открыть файл: %s", err)

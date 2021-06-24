@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"github.com/rjeczalik/notify"
-	"load_rs/configs"
 	"load_rs/internal/load_file"
 	"log"
 	"path/filepath"
@@ -27,7 +26,7 @@ func main() {
 	runtime.GOMAXPROCS(8)
 
 	notify_chan := make(chan notify.EventInfo, 1000)
-	folder := configs.GetFolder()
+	folder := load_file.GetFolder()
 	file_chan := make(chan string)
 
 	if err := notify.Watch(folder, notify_chan, notify.Create); err != nil {
