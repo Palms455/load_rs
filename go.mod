@@ -3,6 +3,7 @@ module load_rs
 go 1.14
 
 require (
+	github.com/google/uuid v1.0.0
 	github.com/jackc/pgx/v4 v4.11.0
 	github.com/lestrrat-go/libxml2 v0.0.0-20201123224832-e6d9de61b80d
 	github.com/mailru/easyjson v0.7.7

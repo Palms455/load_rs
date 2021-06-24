@@ -3,23 +3,16 @@ package load_file
 import (
 	"archive/zip"
 	"bytes"
-	"encoding/json"
-	"fmt"
-	"io"
 	"github.com/lestrrat-go/libxml2/xsd"
+	"io"
 	"load_rs/internal/storage"
 	"load_rs/internal/xml_parse"
 	"load_rs/internal/xsd_validation"
 	"log"
 	"os"
 	"path/filepath"
-	"regexp"
-
-
+	"strings"
 )
-var rgx = regexp.MustCompile(`(C|H|T|DP|DV|DO|DS|DU|DF)M(\d{6})T(\d{2})_([1-9]\d{3})(\d{1,10})\.(ZIP|zip)$`)
-
-
 
 func LoadRS(file string, i int) {
 	// Распаковка, валидация реестров
@@ -32,24 +25,21 @@ func LoadRS(file string, i int) {
 	defer os.Remove(file)
 	defer r.Close()
 
-	rs := rgx.FindStringSubmatch(file)
-	if len(rs) == 0 {
-		log.Fatalf("Файл %s не подходит для обработки", r.File)
-	}
-	filename, ftype, mo, tfoms, period, nn:= rs[0], rs[1], rs[2], rs[3], rs[4], rs[5]
-	fmt.Println(ftype, mo, tfoms, period, nn)
+	rs := &storage.RsFile{}
+	rs.GetFromFile(file)
 
-	open_period, err := storage.GetCurrentPeriod(period)
+	open_period, err := storage.GetCurrentPeriod(rs.Period)
 	if open_period == 0 {
-		log.Fatalf("Период %s файла %s закрыт для загрузки или не существует", period, filename)
+		log.Fatalf("Период %s файла %s закрыт для загрузки или не существует", rs.Period, rs.Filename)
 		return
 	}
+
+	errArray := []string{}
 
 	// Iterate through the files in the archive,
 	rs_data := &xml_parse.RsFile{}
 	for _, f := range r.File {
 		log.Printf("Обработка файла %s", f.Name)
-		log.Printf("WORKER RUNING %d\n", i)
 
 		reestr_file, err := f.Open()
 		if err != nil {
@@ -70,18 +60,32 @@ func LoadRS(file string, i int) {
 
 		if err := xsd_validation.ValidateXSD(&tee, xsd_file); err != nil {
 			for _, e := range err.(xsd.SchemaValidationError).Errors() {
+				errArray = append(errArray, string(e.Error()))
 				log.Printf("error: %s", e.Error())
-				return
 			}
 		}
+		if len(errArray) == 0 {
+			rs_data.XmlDecode(&buf, string([]rune(f.Name)[0]))
+		}
+	}
 
-		rs_data.XmlDecode(&buf, string([]rune(f.Name)[0]))
-		//json_data, _ := rs_data.MarshalJSON()
-		json_data, _ := json.Marshal(rs_data)
+	rs.ErrorMsg = map[string]string{
+		"load_errors": strings.Join(errArray, ". "),
+	}
+	if len(errArray) == 0 {
+		rs.Status = "20"
+	} else {
+		rs.Status = "-1"
+	}
 
-
-		fmt.Sprintf("%s", string(json_data))
-
+	dst := filepath.Join("uploads", rs.Rsfile)
+	if err := copy_file(file, dst); err != nil {
+		log.Fatal(err)
+		return
+	}
+	rs.Rs_data = *rs_data
+	if err := rs.LoadRs(); err != nil {
+		return
 	}
 	log.Printf("Файл %s обработан!", file)
 	return
