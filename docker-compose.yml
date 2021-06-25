@@ -1,0 +1,12 @@
+version: '2'
+services:
+  load_rs:
+    image: load_rs
+    container_name: golang_rs
+    volumes:
+      - ./uploads:/app/uploads
+      - ./xsd:/app/xsd:ro
+      - ./configs:/app/configs:ro
+      - ./reestr:/app/reestr
+    restart: unless-stopped
+    command: /app/main

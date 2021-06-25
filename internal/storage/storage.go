@@ -17,6 +17,7 @@ var pool *pgxpool.Pool
 var err error
 
 func init() {
+	log.Println("Connected to : ", config.MainConfig.DbAddr)
 	pool, err = pgxpool.Connect(context.Background(), config.MainConfig.DbAddr)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Unable to connect to database:", err)
