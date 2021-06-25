@@ -128,7 +128,7 @@ func (r *RsFile) LoadRs() error {
 		err = pool.QueryRow(context.Background(),
 			`insert into rsj.inbufrs
 					(filename, ftype, mo, tfoms, period_id, nn, ts_insert, zglv, schet, zglv_p, status, rsfile)
-				values ($1, $2, $3, $4, $5, $6, now(), $7, $8, $9, $10, $11) returning id`,
+				values ($1, $2, $3, $4, $5, $6, now(), $7, $8, $9, 0, $10) returning id`,
 			r.Filename,
 			r.Ftype,
 			r.Mo,
@@ -138,7 +138,6 @@ func (r *RsFile) LoadRs() error {
 			json_zglv,
 			json_schet,
 			json_zglv_p,
-			r.Status,
 			r.Rsfile).Scan(&rs_id)
 		if err != nil {
 			log.Fatalf("Ошибка при вставке в rsj.inbufrs %s", err)
@@ -152,7 +151,11 @@ func (r *RsFile) LoadRs() error {
 			log.Fatalf("Ошибка при вставке в rsj.inbufzap %s", err)
 			return err
 		}
-
+		_, err = pool.Exec(context.Background(), "update rsj.inbufrs set status = 20 where id = $1", rs_id)
+		if err != nil {
+			log.Fatalf("Ошибка при обновлении rsj.inbufrs %s", err)
+			return err
+		}
 	} else {
 		json_error, _ := json.Marshal(r.ErrorMsg)
 		err = pool.QueryRow(context.Background(),

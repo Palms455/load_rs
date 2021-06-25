@@ -7,28 +7,15 @@ import (
 )
 
 type Zglv struct {
-	VERSION, DATA, FILENAME, SD_Z string
+	VERSION, DATA, FILENAME, SD_Z string `xml:",omitempty" json:",omitempty"`
 }
 
 type Zglv_p struct {
-	VERSION, DATA, FILENAME, FILENAME1 string
+	VERSION, DATA, FILENAME, FILENAME1 string `xml:",omitempty" json:",omitempty"`
 }
 
 type Schet struct {
-	CODE string
-	CODE_MO string
-	YEAR string
-	MONTH string
-	NSCHET string
-	DSCHET string
-	PLAT float32 `xml:",omitempty" json:",omitempty"`
-	SUMMAV float32 `xml:",omitempty" json:",omitempty"`
-	COMENTS string `xml:",omitempty" json:",omitempty"`
-	SUMMAP float32 `xml:",omitempty" json:",omitempty"`
-	SANK_MEK float32 `xml:",omitempty" json:",omitempty"`
-	SANK_MEE float32 `xml:",omitempty" json:",omitempty"`
-	SANK_EKMP float32 `xml:",omitempty" json:",omitempty"`
-	DISP string `xml:",omitempty" json:",omitempty"`
+	CODE, CODE_MO, YEAR, MONTH, NSCHET, DSCHET, PLAT, SUMMAV, COMENTS, SUMMAP, SANK_MEK, SANK_MEE, SANK_EKMP, DISP string `xml:",omitempty" json:",omitempty"`
 
 }
 
@@ -36,8 +23,8 @@ type Schet struct {
 type Pacient struct {
 	ID_PAC string
 	VPOLIS string
-	SPOLIS string `xml:"omitempty" json:",omitempty"`
-	NPOLIS string `xml:"NPOLIS"`
+	SPOLIS string `xml:",omitempty" json:",omitempty"`
+	NPOLIS string `xml:",omitempty" json:",omitempty"`
 	ST_OKATO string `xml:",omitempty" json:",omitempty"`
 	SMO string `xml:",omitempty" json:",omitempty"`
 	SMO_OGRN string `xml:",omitempty" json:",omitempty"`
@@ -45,7 +32,7 @@ type Pacient struct {
 	SMO_NAM string `xml:",omitempty" json:",omitempty"`
 	INV string `xml:",omitempty" json:",omitempty"`
 	MSE string `xml:",omitempty" json:",omitempty"`
-	NOVOR string
+	NOVOR string `xml:",omitempty" json:",omitempty"`
 	VNOV_S string `xml:",omitempty" json:",omitempty"`
 }
 
@@ -110,22 +97,21 @@ type Rs struct {
 				} `xml:",omitempty" json:",omitempty"`
 				REAB, PRVS, VERS_SPEC, IDDOKT string `xml:",omitempty" json:",omitempty"`
 				ED_COL string `xml:",omitempty" json:",omitempty"`
-				TARIF float32`xml:",omitempty" json:",omitempty"`
-				SUM_M float32
+				TARIF string`xml:",omitempty" json:",omitempty"`
+				SUM_M string
 				USL []struct {
 					IDSERV, LPU, LPU_1, PODR, PROFIL, VID_VME, DET, DATE_IN, DATE_OUT, DS, P_OTK, CODE_USL, KOL_USL string `xml:",omitempty" json:",omitempty"`
-					TARIF, SUMV_USL float32 `xml:",omitempty" json:",omitempty"`
-					PRVS, CODE_MD, NPL, COMENTU string `xml:",omitempty" json:",omitempty"`
+					TARIF, SUMV_USL, PRVS, CODE_MD, NPL, COMENTU string `xml:",omitempty" json:",omitempty"`
 				} `xml:",omitempty" json:",omitempty"`
 				COMENTSL string`xml:",omitempty" json:",omitempty"`
 			}
 			IDSP string `xml:",omitempty" json:",omitempty"`
-			SUMV float32 `xml:",omitempty" json:",omitempty"`
+			SUMV string `xml:",omitempty" json:",omitempty"`
 			OPLATA string `xml:",omitempty" json:",omitempty"`
-			SUMP float32 `xml:",omitempty" json:",omitempty"`
+			SUMP string `xml:",omitempty" json:",omitempty"`
 			SANK []struct{
 				S_CODE string `xml:",omitempty" json:",omitempty"`
-				S_SUM float32 `xml:",omitempty" json:",omitempty"`
+				S_SUM string `xml:",omitempty" json:",omitempty"`
 				S_TIP string `xml:",omitempty" json:",omitempty"`
 				SL_ID, S_OSN, DATE_ACT, NUM_ACT, CODE_EXP, S_COM, S_IST string `xml:",omitempty" json:",omitempty"`
 			} `xml:",omitempty" json:",omitempty"`
@@ -141,8 +127,8 @@ type L struct {
 	PERS []struct{
 		ID_PAC string
 		FAM, IM, OT string `xml:",omitempty" json:",omitempty"`
-		W, DR string
-		DOST []string
+		W, DR string `xml:",omitempty" json:",omitempty"`
+		DOST []string `xml:",omitempty" json:",omitempty"`
 		TEL, FAM_P, IM_P, OT_P, W_P, DR_P, MR, DOCTYPE, DOCSER string `xml:",omitempty" json:",omitempty"`
 		DOCNUM, DOCDATE, DOCORG, SNILS, OKATOG, OKATOP, COMENTP string `xml:",omitempty" json:",omitempty"`
 	}
