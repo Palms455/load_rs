@@ -21,10 +21,11 @@ type Schet struct {
 
 
 type Pacient struct {
-	ID_PAC string
-	VPOLIS string
+	ID_PAC string `xml:",omitempty" json:",omitempty"`
+	VPOLIS string `xml:",omitempty" json:",omitempty"`
 	SPOLIS string `xml:",omitempty" json:",omitempty"`
 	NPOLIS string `xml:",omitempty" json:",omitempty"`
+	ENP string `xml:",omitempty" json:",omitempty"`
 	ST_OKATO string `xml:",omitempty" json:",omitempty"`
 	SMO string `xml:",omitempty" json:",omitempty"`
 	SMO_OGRN string `xml:",omitempty" json:",omitempty"`
@@ -52,7 +53,7 @@ type Rs struct {
 			VB_P string `xml:",omitempty" json:",omitempty"`
 			SL []struct {
 				SL_ID string
-				VOD_HMP, METOD_HMP, LPU_1, PODR, PROFIL, PROFIL_K, DET, TAL_D, TAL_NUM, TAL_P, P_CEL, NHISTORY, P_PER, DATE_1, DATE_2, KD, DS0, DS1 string `xml:",omitempty" json:",omitempty"`
+				VID_HMP, METOD_HMP, LPU_1, PODR, PROFIL, PROFIL_K, DET, TAL_D, TAL_NUM, TAL_P, P_CEL, NHISTORY, P_PER, DATE_1, DATE_2, KD, DS0, DS1 string `xml:",omitempty" json:",omitempty"`
 				DS2, DS3 []string `xml:",omitempty" json:",omitempty"`
 				C_ZAB, DS1_PR, DS_ONK, PR_D_N, DN string `xml:",omitempty" json:",omitempty"`
 				CODE_MES1 []string `xml:",omitempty" json:",omitempty"`
@@ -61,7 +62,7 @@ type Rs struct {
 					DS2, DS2_PR, PR_DS2_N string `xml:",omitempty" json:",omitempty"`
 				} `xml:",omitempty" json:",omitempty"`
 				NAZ []struct {
-					NAZ_N, NAZ_R, NAZ_SP, NAZ_V, NAZ_USL, NAPR_DATE, NAPR_MO, NAZ_PMP, NAZ_PK string `xml:",omitempty" json:",omitempty"`
+					NAZ_N, NAZ_R, NAZ_SP, NAZ_IDDOKT, NAZ_V, NAZ_USL, NAPR_DATE, NAPR_MO, NAZ_PMP, NAZ_PK string `xml:",omitempty" json:",omitempty"`
 				} `xml:",omitempty" json:",omitempty"`
 				NAPR []struct{
 					NAPR_DATE, NAPR_MO, NAPR_V, MET_ISSL, NAPR_USL string `xml:",omitempty" json:",omitempty"`
@@ -81,7 +82,7 @@ type Rs struct {
 						USL_TIP, HIR_TIP, LEK_TIP_L, LEK_TIP_V string `xml:",omitempty" json:",omitempty"`
 						LEK_PR []struct{
 							REGNUM, CODE_SH string `xml:",omitempty" json:",omitempty"`
-							DATE_INJ []string
+							DATE_INJ []string `xml:",omitempty" json:",omitempty"`
 						} `xml:",omitempty" json:",omitempty"`
 					} `xml:",omitempty" json:",omitempty"`
 					PPTR, LUCH_TIP string `xml:",omitempty" json:",omitempty"`
@@ -89,7 +90,7 @@ type Rs struct {
 				} `xml:",omitempty" json:",omitempty"`
 				KSG_KPG []struct{
 					N_KSG, VER_KSG, KSG_PG, N_KPG, KOEF_Z, KOEF_UP, BZTSZ, KOEF_D, KOEF_U string `xml:",omitempty" json:",omitempty"`
-					CRIT []string
+					CRIT []string `xml:",omitempty" json:",omitempty"`
 					SL_K, IT_SL string `xml:",omitempty" json:",omitempty"`
 					SL_KOEF []struct{
 						IDSL, Z_SL string `xml:",omitempty" json:",omitempty"`
@@ -97,11 +98,15 @@ type Rs struct {
 				} `xml:",omitempty" json:",omitempty"`
 				REAB, PRVS, VERS_SPEC, IDDOKT string `xml:",omitempty" json:",omitempty"`
 				ED_COL string `xml:",omitempty" json:",omitempty"`
-				TARIF string`xml:",omitempty" json:",omitempty"`
-				SUM_M string
+				TARIF string `xml:",omitempty" json:",omitempty"`
+				SUM_M string `xml:",omitempty" json:",omitempty"`
 				USL []struct {
 					IDSERV, LPU, LPU_1, PODR, PROFIL, VID_VME, DET, DATE_IN, DATE_OUT, DS, P_OTK, CODE_USL, KOL_USL string `xml:",omitempty" json:",omitempty"`
-					TARIF, SUMV_USL, PRVS, CODE_MD, NPL, COMENTU string `xml:",omitempty" json:",omitempty"`
+					TARIF, SUMV_USL string `xml:",omitempty" json:",omitempty"`
+					MR_USL_N []struct {
+						MR_N, PRVS, CODE_MD string `xml:",omitempty" json:",omitempty"`
+					} `xml:",omitempty" json:",omitempty"`
+					PRVS, CODE_MD, NPL, COMENTU string `xml:",omitempty" json:",omitempty"`
 				} `xml:",omitempty" json:",omitempty"`
 				COMENTSL string`xml:",omitempty" json:",omitempty"`
 			}
@@ -122,12 +127,11 @@ type Rs struct {
 
 type L struct {
 	ZGLV struct{
-		VERSION, DATA, FILENAME, FILENAME1 string
+		VERSION, DATA, FILENAME, FILENAME1 string `xml:",omitempty" json:",omitempty"`
 	}
 	PERS []struct{
 		ID_PAC string
-		FAM, IM, OT string `xml:",omitempty" json:",omitempty"`
-		W, DR string `xml:",omitempty" json:",omitempty"`
+		FAM, IM, OT, W, DR string `xml:",omitempty" json:",omitempty"`
 		DOST []string `xml:",omitempty" json:",omitempty"`
 		TEL, FAM_P, IM_P, OT_P, W_P, DR_P, MR, DOCTYPE, DOCSER string `xml:",omitempty" json:",omitempty"`
 		DOCNUM, DOCDATE, DOCORG, SNILS, OKATOG, OKATOP, COMENTP string `xml:",omitempty" json:",omitempty"`
