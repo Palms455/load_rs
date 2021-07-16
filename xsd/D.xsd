@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="WINDOWS-1251"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-	<xs:include schemaLocation="xsd/includes/types.xsd" />
-	<xs:include schemaLocation="xsd/includes/common.xsd" />
+  <xs:include schemaLocation="xsd/includes/types.xsd" />
+  <xs:include schemaLocation="xsd/includes/common.xsd" />
   <xs:element name="ZL_LIST">
     <xs:complexType>
       <xs:sequence>
@@ -52,6 +52,7 @@
                                 <xs:element name="NAZ_N" type="xs:string" />
                                 <xs:element name="NAZ_R" type="xs:string" />
                                 <xs:element name="NAZ_SP" minOccurs="0" type="xs:string" />
+                                <xs:element name="NAZ_IDDOKT" minOccurs="0" type="xs:string" />
                                 <xs:element name="NAZ_V" minOccurs="0" type="xs:string" />
                                 <xs:element name="NAZ_USL" minOccurs="0" type="xs:string" />
                                 <xs:element name="NAPR_DATE" minOccurs="0" type="xs:date" />
@@ -76,8 +77,17 @@
                                 <xs:element name="CODE_USL" type="xs:string" />
                                 <xs:element name="TARIF" minOccurs="0" type="money-type" />
                                 <xs:element name="SUMV_USL" type="money-type" />
-                                <xs:element name="PRVS" type="xs:string" />
-                                <xs:element name="CODE_MD" type="xs:string" />
+                                <xs:element name="MR_USL_N" minOccurs="0" maxOccurs="unbounded">
+                                  <xs:complexType>
+                                    <xs:sequence>
+                                      <xs:element name="MR_N" type="xs:string" />
+                                      <xs:element name="PRVS" type="xs:string" />
+                                      <xs:element name="CODE_MD" type="xs:string" />
+                                    </xs:sequence>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="PRVS" minOccurs="0" type="xs:string" />
+                                <xs:element name="CODE_MD" minOccurs="0" type="xs:string" />
                                 <xs:element name="COMENTU" minOccurs="0" type="xs:string" />
                               </xs:sequence>
                             </xs:complexType>
