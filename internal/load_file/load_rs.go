@@ -14,12 +14,14 @@ import (
 	"strings"
 )
 
+
+
 func LoadRS(file string, i int) {
 	// Распаковка, валидация реестров
 	// Open a zip archive for reading.
 	r, err := zip.OpenReader(file)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("ОШибка открытия zip - %s: %s", file, err)
 		return
 	}
 	defer os.Remove(file)
@@ -28,11 +30,12 @@ func LoadRS(file string, i int) {
 	rs := &storage.RsFile{}
 	rs.GetFromFile(file)
 
-	open_period, err := storage.GetCurrentPeriod(rs.Period)
-	if open_period == 0 {
+	year, month, err := storage.GetCurrentPeriod(rs.Period)
+	if year == 0 {
 		log.Fatalf("Период %s файла %s закрыт для загрузки или не существует", rs.Period, rs.Filename)
 		return
 	}
+	rs.GetRsFilePath(year, month)
 
 	errArray := []string{}
 
@@ -43,7 +46,7 @@ func LoadRS(file string, i int) {
 
 		reestr_file, err := f.Open()
 		if err != nil {
-			log.Fatal(err)
+			log.Println(err)
 		}
 		defer reestr_file.Close()
 
@@ -74,6 +77,7 @@ func LoadRS(file string, i int) {
 	}
 	if len(errArray) == 0 {
 		rs.Status = "20"
+
 	} else {
 		rs.Status = "-1"
 	}

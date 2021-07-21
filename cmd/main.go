@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/rjeczalik/notify"
 	"load_rs/internal/load_file"
+	"load_rs/internal/storage"
 	"log"
 	"path/filepath"
 	"runtime"
@@ -11,6 +12,12 @@ import (
 	"time"
 )
 
+func flc_worker(ch chan int, wg *sync.WaitGroup) {
+	for file_id := range ch {
+		storage.FLC(file_id)
+	}
+	wg.Done()
+}
 
 func worker(ch chan string, wg *sync.WaitGroup, i int) {
 
@@ -28,6 +35,7 @@ func main() {
 	notify_chan := make(chan notify.EventInfo, 1000)
 	folder := load_file.GetFolder()
 	file_chan := make(chan string)
+	file_id_chan := make(chan int)
 
 	if err := notify.Watch(folder, notify_chan, notify.Create); err != nil {
 		log.Fatal(err)
@@ -48,6 +56,11 @@ func main() {
 		go worker(file_chan, &wg, i)
 	}
 
+	for i:= 0; i < 6; i++ {
+		wg.Add(1)
+		go flc_worker(file_id_chan, &wg)
+	}
+
 	for _, filename := range files {
 		file := filepath.Join(folder, filename)
 		file_chan <- file
@@ -57,6 +70,8 @@ func main() {
 		select {
 		case res := <-notify_chan:
 			file_chan <- res.Path()
+		case res := <-storage.Flc_chan:
+			file_id_chan <- res
 		}
 	}
 

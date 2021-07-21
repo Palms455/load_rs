@@ -2,19 +2,22 @@ package storage
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"load_rs/internal/config"
 	"load_rs/internal/xml_parse"
 	"log"
 	"os"
-	"github.com/jackc/pgx/v4/pgxpool"
 	"path/filepath"
-	"encoding/json"
+	"strconv"
+	"time"
 )
 
 var pool *pgxpool.Pool
 var err error
+
+var Flc_chan = make(chan int, 1000)
 
 func init() {
 	log.Println("Connected to : ", config.MainConfig.DbAddr)
@@ -37,20 +40,22 @@ func (r *RsFile) GetFromFile(file string) {
 		log.Fatalf("Файл %s не подходит для обработки", file)
 	}
 	r.Filename, r.Ftype, r.Mo, r.Tfoms, r.Period, r.Nn = rs[0], rs[1], rs[2], rs[3], rs[4], rs[5]
-	guid := uuid.New().String()
-	r.Rsfile = filepath.Join("reestr", "buf", guid, r.Filename)
+}
+
+func (r *RsFile) GetRsFilePath(year, month int) {
+	r.Rsfile = filepath.Join("for_tfoms", strconv.Itoa(year), fmt.Sprintf("%02d", month), r.Filename)
 }
 
 
-func GetCurrentPeriod(period_match string) (int, error) {
-	var period int
+func GetCurrentPeriod(period_match string) (int, int, error) {
+	var year, month int
 	err = pool.QueryRow(context.Background(),
-		"select id from rsj.period where id = $1 and is_open=True limit 1", period_match).Scan(&period)
+		"select year, month from rsj.period where id = $1 and is_open=True limit 1", period_match).Scan(&year, &month)
 	if err != nil {
 		log.Printf("Ошибка при получении периода: %s", err)
-		return period, err
+		return year, month, err
 	}
-	return period, err
+	return year, month, err
 }
 
 func (r *RsFile) LoadPers(rs_id int) error {
@@ -156,6 +161,7 @@ func (r *RsFile) LoadRs() error {
 			log.Fatalf("Ошибка при обновлении rsj.inbufrs %s", err)
 			return err
 		}
+		Flc_chan <- rs_id
 	} else {
 		json_error, _ := json.Marshal(r.ErrorMsg)
 		err = pool.QueryRow(context.Background(),
@@ -177,4 +183,16 @@ func (r *RsFile) LoadRs() error {
 		}
 	}
 	return nil
+}
+
+
+func FLC(file_id int) {
+	start := time.Now()
+	_, err = pool.Exec(context.Background(), "select rsj.process_flc($1)", file_id)
+	if err != nil {
+		log.Fatalf("Ошибка при проведении ФЛК %s", err)
+	}
+	end := time.Since(start)
+	log.Println(file_id)
+	log.Println("Время ФЛК для файла: ", end)
 }
