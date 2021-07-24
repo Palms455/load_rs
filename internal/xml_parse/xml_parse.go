@@ -84,9 +84,8 @@ type Rs struct {
 							REGNUM, CODE_SH string `xml:",omitempty" json:",omitempty"`
 							DATE_INJ []string `xml:",omitempty" json:",omitempty"`
 						} `xml:",omitempty" json:",omitempty"`
+						PPTR, LUCH_TIP string `xml:",omitempty" json:",omitempty"`
 					} `xml:",omitempty" json:",omitempty"`
-					PPTR, LUCH_TIP string `xml:",omitempty" json:",omitempty"`
-
 				} `xml:",omitempty" json:",omitempty"`
 				KSG_KPG []struct{
 					N_KSG, VER_KSG, KSG_PG, N_KPG, KOEF_Z, KOEF_UP, BZTSZ, KOEF_D, KOEF_U string `xml:",omitempty" json:",omitempty"`
