@@ -15,6 +15,7 @@ import (
 func flc_worker(ch chan int, wg *sync.WaitGroup) {
 	for file_id := range ch {
 		storage.FLC(file_id)
+		runtime.Gosched()
 	}
 	wg.Done()
 }
@@ -24,6 +25,7 @@ func worker(ch chan string, wg *sync.WaitGroup, i int) {
 	for filename := range ch {
 		time.Sleep(100*time.Millisecond)
 		load_file.LoadRS(filename, i)
+		runtime.Gosched()
 	}
 	wg.Done()
 }
@@ -34,8 +36,7 @@ func main() {
 
 	notify_chan := make(chan notify.EventInfo, 1000)
 	folder := load_file.GetFolder()
-	file_chan := make(chan string)
-	file_id_chan := make(chan int)
+	file_chan := make(chan string, 1000)
 
 	if err := notify.Watch(folder, notify_chan, notify.Create); err != nil {
 		log.Fatal(err)
@@ -58,7 +59,7 @@ func main() {
 
 	for i:= 0; i < 6; i++ {
 		wg.Add(1)
-		go flc_worker(file_id_chan, &wg)
+		go flc_worker(storage.Flc_chan, &wg)
 	}
 
 	for _, filename := range files {
@@ -66,14 +67,9 @@ func main() {
 		file_chan <- file
 	}
 
-	for {
-		select {
-		case res := <-notify_chan:
+	for res := range notify_chan {
 			file_chan <- res.Path()
-		case res := <-storage.Flc_chan:
-			file_id_chan <- res
 		}
-	}
 
 	wg.Wait()
 }
