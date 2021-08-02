@@ -32,7 +32,7 @@ func LoadRS(file string, i int) {
 
 	year, month, err := storage.GetCurrentPeriod(rs.Period)
 	if year == 0 {
-		log.Fatalf("Период %s файла %s закрыт для загрузки или не существует", rs.Period, rs.Filename)
+		log.Printf("Период %s файла %s закрыт для загрузки или не существует", rs.Period, rs.Filename)
 		return
 	}
 	rs.GetRsFilePath(year, month)

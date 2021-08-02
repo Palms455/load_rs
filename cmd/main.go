@@ -9,7 +9,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"sync"
-	"time"
 )
 
 func flc_worker(ch chan int, wg *sync.WaitGroup) {
@@ -23,7 +22,6 @@ func flc_worker(ch chan int, wg *sync.WaitGroup) {
 func worker(ch chan string, wg *sync.WaitGroup, i int) {
 
 	for filename := range ch {
-		time.Sleep(100*time.Millisecond)
 		load_file.LoadRS(filename, i)
 		runtime.Gosched()
 	}
@@ -38,7 +36,7 @@ func main() {
 	folder := load_file.GetFolder()
 	file_chan := make(chan string, 1000)
 
-	if err := notify.Watch(folder, notify_chan, notify.Create); err != nil {
+	if err := notify.Watch(folder, notify_chan, notify.InCloseWrite); err != nil {
 		log.Fatal(err)
 	}
 	defer close(file_chan)

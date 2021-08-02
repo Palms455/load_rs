@@ -37,7 +37,7 @@ type RsFile struct {
 func (r *RsFile) GetFromFile(file string) {
 	rs := Rgx.FindStringSubmatch(file)
 	if len(rs) == 0 {
-		log.Fatalf("Файл %s не подходит для обработки", file)
+		log.Printf("Файл %s не подходит для обработки", file)
 	}
 	r.Filename, r.Ftype, r.Mo, r.Tfoms, r.Period, r.Nn = rs[0], rs[1], rs[2], rs[3], rs[4], rs[5]
 }
@@ -122,7 +122,7 @@ func (r *RsFile) DeleteRs() error {
 func (r *RsFile) LoadRs() error {
 	var rs_id int
 	if err := r.DeleteRs(); err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		return err
 	}
 
