@@ -3,6 +3,7 @@ package storage
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/jackc/pgx/v4/pgxpool"
 	"load_rs/internal/config"
@@ -23,7 +24,7 @@ func init() {
 	log.Println("Connected to : ", config.MainConfig.DbAddr)
 	pool, err = pgxpool.Connect(context.Background(), config.MainConfig.DbAddr)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Unable to connect to database:", err)
+		log.Println("Unable to connect to database:", err)
 		os.Exit(1)
 	}
 }
@@ -31,15 +32,16 @@ func init() {
 type RsFile struct {
 	Filename, Ftype, Mo, Tfoms, Period, Nn, Rsfile, Status string
 	Rs_data xml_parse.RsData
-	ErrorMsg map[string]string
+	ErrorMsg map[string][]string
 }
 
-func (r *RsFile) GetFromFile(file string) {
+func (r *RsFile) GetFromFile(file string) error {
 	rs := Rgx.FindStringSubmatch(file)
-	if len(rs) == 0 {
-		log.Printf("Файл %s не подходит для обработки", file)
+	if len(rs) < 6  {
+		return errors.New("Наименование файла некорректное")
 	}
 	r.Filename, r.Ftype, r.Mo, r.Tfoms, r.Period, r.Nn = rs[0], rs[1], rs[2], rs[3], rs[4], rs[5]
+	return nil
 }
 
 func (r *RsFile) GetRsFilePath(year, month int) {
@@ -107,10 +109,7 @@ func (r *RsFile) DeleteRs() error {
 		log.Println("del inbufzap")
 		log.Println(err)
 	}
-	_, err = pool.Exec(context.Background(), "delete from rsj.log_time_flc flc where flc.rsfile_id = $1", rs_id)
-	if err != nil {
-		log.Println(err)
-	}
+
 	_, err = pool.Exec(context.Background(), "delete from rsj.inbufrs rs where rs.id = $1", rs_id)
 	if err != nil {
 		log.Println("del inbufrs")

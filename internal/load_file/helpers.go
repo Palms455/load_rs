@@ -5,7 +5,10 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"regexp"
 )
+
+var RgxPath = regexp.MustCompile(`(-\d\.(ZIP|zip))`)
 
 func create_upload_dir(path string) {
 	if _, err := os.Stat(path); os.IsNotExist(err) {

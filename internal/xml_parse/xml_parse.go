@@ -34,7 +34,7 @@ type Pacient struct {
 	INV string `xml:",omitempty" json:",omitempty"`
 	MSE string `xml:",omitempty" json:",omitempty"`
 	NOVOR string `xml:",omitempty" json:",omitempty"`
-	VNOV_S string `xml:",omitempty" json:",omitempty"`
+	VNOV_D string `xml:",omitempty" json:",omitempty"`
 }
 
 
@@ -132,7 +132,7 @@ type L struct {
 		ID_PAC string
 		FAM, IM, OT, W, DR string `xml:",omitempty" json:",omitempty"`
 		DOST []string `xml:",omitempty" json:",omitempty"`
-		TEL, FAM_P, IM_P, OT_P, W_P, DR_P, MR, DOCTYPE, DOCSER string `xml:",omitempty" json:",omitempty"`
+		TEL, FAM_P, IM_P, OT_P, W_P, DR_P, DOST_P, MR, DOCTYPE, DOCSER string `xml:",omitempty" json:",omitempty"`
 		DOCNUM, DOCDATE, DOCORG, SNILS, OKATOG, OKATOP, COMENTP string `xml:",omitempty" json:",omitempty"`
 	}
 }

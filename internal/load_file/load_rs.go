@@ -11,24 +11,36 @@ import (
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
 )
 
 
 
 func LoadRS(file string, i int) {
 	// Распаковка, валидация реестров
-	// Open a zip archive for reading.
-	r, err := zip.OpenReader(file)
-	if err != nil {
-		log.Printf("ОШибка открытия zip - %s: %s", file, err)
+
+	new_filepath := RgxPath.ReplaceAllString(file, ".zip")
+
+	if err := os.Rename(file, new_filepath); err != nil {
+		log.Println("Ошибка при переименовании файла: ", err)
 		return
 	}
-	defer os.Remove(file)
-	defer r.Close()
+
+	file = new_filepath
 
 	rs := &storage.RsFile{}
-	rs.GetFromFile(file)
+	if err := rs.GetFromFile(file); err != nil {
+		log.Printf("Ошибка в наименовании файла - %s: %s", file, err)
+		return
+	}
+
+	r, err := zip.OpenReader(file)
+	if err != nil {
+		log.Printf("Ошибка открытия zip - %s: %s", file, err)
+		return
+	}
+
+	defer r.Close()
+
 
 	year, month, err := storage.GetCurrentPeriod(rs.Period)
 	if year == 0 {
@@ -72,8 +84,8 @@ func LoadRS(file string, i int) {
 		}
 	}
 
-	rs.ErrorMsg = map[string]string{
-		"load_errors": strings.Join(errArray, ". "),
+	rs.ErrorMsg = map[string][]string{
+		"load_errors": errArray,
 	}
 	if len(errArray) == 0 {
 		rs.Status = "20"
@@ -91,6 +103,9 @@ func LoadRS(file string, i int) {
 	if err := rs.LoadRs(); err != nil {
 		return
 	}
+
+	r.Close()
+	os.Remove(file)
 	log.Printf("Файл %s обработан!", file)
 	return
 }
