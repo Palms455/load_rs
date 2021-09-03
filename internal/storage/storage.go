@@ -49,15 +49,16 @@ func (r *RsFile) GetRsFilePath(year, month int) {
 }
 
 
-func GetCurrentPeriod(period_match string) (int, int, error) {
+func GetCurrentPeriod(period_match string) (int, int, bool, bool, error) {
 	var year, month int
+	var disallow_load_pr_nov, disallow_load_primary_rs bool
 	err = pool.QueryRow(context.Background(),
-		"select year, month from rsj.period where id = $1 and is_open=True limit 1", period_match).Scan(&year, &month)
+		"select year, month, disallow_load_pr_nov, disallow_load_primary_rs from rsj.period where id = $1 and is_open=True limit 1", period_match).Scan(&year, &month, &disallow_load_pr_nov, &disallow_load_primary_rs)
 	if err != nil {
 		log.Printf("Ошибка при получении периода: %s", err)
-		return year, month, err
+		return year, month, disallow_load_pr_nov, disallow_load_primary_rs, err
 	}
-	return year, month, err
+	return year, month, disallow_load_pr_nov, disallow_load_primary_rs, err
 }
 
 func (r *RsFile) LoadPers(rs_id int) error {
