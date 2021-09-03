@@ -36,7 +36,8 @@
       <xs:element name="ID_PAC" type="xs:string" />
       <xs:element name="VPOLIS" type="xs:string" />
       <xs:element name="SPOLIS" minOccurs="0" type="xs:string" />
-      <xs:element name="NPOLIS" type="xs:string" />
+      <xs:element name="NPOLIS" minOccurs="0" type="xs:string" />
+	  <xs:element name="ENP" minOccurs="0" type="xs:string" />
       <xs:element name="ST_OKATO" minOccurs="0" type="xs:string" />
       <xs:element name="SMO" minOccurs="0" type="xs:string" />
       <xs:element name="SMO_OGRN" minOccurs="0" type="xs:string" />

@@ -32,6 +32,10 @@ func LoadRS(file string, i int) {
 		log.Printf("Ошибка в наименовании файла - %s: %s", file, err)
 		return
 	}
+	//if rs.Nn == "2" {
+	//	log.Printf("Загрузка исправленной части запрещена. Файл- %s", file)
+	//	return
+	//}
 
 	r, err := zip.OpenReader(file)
 	if err != nil {
@@ -42,9 +46,17 @@ func LoadRS(file string, i int) {
 	defer r.Close()
 
 
-	year, month, err := storage.GetCurrentPeriod(rs.Period)
+	year, month, disallow_load_pr_nov, disallow_load_primary_rs, err := storage.GetCurrentPeriod(rs.Period)
 	if year == 0 {
 		log.Printf("Период %s файла %s закрыт для загрузки или не существует", rs.Period, rs.Filename)
+		return
+	}
+	if disallow_load_pr_nov == true && rs.Nn == "2" {
+		log.Printf("Период %s файла %s закрыт для загрузки исправленной части", rs.Period, rs.Filename)
+		return
+	}
+	if disallow_load_primary_rs == true && rs.Nn != "2" {
+		log.Printf("Период %s файла %s закрыт для загрузки основной части", rs.Period, rs.Filename)
 		return
 	}
 	rs.GetRsFilePath(year, month)
@@ -73,17 +85,21 @@ func LoadRS(file string, i int) {
 		var buf bytes.Buffer
 		tee := io.TeeReader(reestr_file, &buf)
 
-		if err := xsd_validation.ValidateXSD(&tee, xsd_file); err != nil {
-			for _, e := range err.(xsd.SchemaValidationError).Errors() {
-				errArray = append(errArray, string(e.Error()))
-				log.Printf("error: %s", e.Error())
+		if xsd_error := xsd_validation.ValidateXSD(&tee, xsd_file, f.Name); xsd_error != nil {
+			switch type_err := xsd_error.(type) {
+			case xsd.SchemaValidationError:
+				for _, e := range type_err.Errors() {
+					errArray = append(errArray, string(e.Error()))
+					log.Printf("error: %s", e.Error())
+				}
+			default:
+				errArray = append(errArray, string(xsd_error.Error()))
 			}
 		}
 		if len(errArray) == 0 {
 			rs_data.XmlDecode(&buf, string([]rune(f.Name)[0]))
 		}
 	}
-
 	rs.ErrorMsg = map[string][]string{
 		"load_errors": errArray,
 	}
