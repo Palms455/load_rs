@@ -1,6 +1,8 @@
 package xsd_validation
 
 import (
+	"errors"
+	"fmt"
 	"github.com/lestrrat-go/libxml2"
 	"github.com/lestrrat-go/libxml2/xsd"
 	"io"
@@ -11,7 +13,7 @@ import (
 
 
 
-func ValidateXSD(reestr *io.Reader, xsdfile *os.File) error {
+func ValidateXSD(reestr *io.Reader, xsdfile *os.File, filename string) error {
 	xsdbuf, err := ioutil.ReadAll(xsdfile)
 	if err != nil {
 		log.Printf("Не удалось открыть файл XSD: %s", err)
@@ -32,8 +34,7 @@ func ValidateXSD(reestr *io.Reader, xsdfile *os.File) error {
 
 	d, err := libxml2.Parse(bufxml)
 	if err != nil {
-		log.Printf("ОШибка чтения XML файла: %s", err)
-		return err
+		return errors.New(fmt.Sprintf("Ошибка чтения XML файла %s: %s", filename, err))
 	}
 	defer d.Free()
 
