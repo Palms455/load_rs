@@ -81,8 +81,8 @@
                                   <xs:complexType>
                                     <xs:sequence>
                                       <xs:element name="MR_N" type="xs:string" />
-                                      <xs:element name="PRVS" type="xs:string" />
-                                      <xs:element name="CODE_MD" type="xs:string" />
+                                      <xs:element name="PRVS" minOccurs="0" type="xs:string" />
+                                      <xs:element name="CODE_MD" minOccurs="0" type="xs:string" />
                                     </xs:sequence>
                                   </xs:complexType>
                                 </xs:element>
