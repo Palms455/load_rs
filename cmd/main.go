@@ -9,6 +9,7 @@ import (
 	"path/filepath"
 	"runtime"
 	"sync"
+	"time"
 )
 
 func flc_worker(ch chan int, wg *sync.WaitGroup) {
@@ -22,6 +23,7 @@ func flc_worker(ch chan int, wg *sync.WaitGroup) {
 func worker(ch chan string, wg *sync.WaitGroup, i int) {
 
 	for filename := range ch {
+		time.Sleep(5*time.Second)
 		load_file.LoadRS(filename, i)
 		runtime.Gosched()
 	}
