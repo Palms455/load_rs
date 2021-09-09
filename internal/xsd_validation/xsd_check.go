@@ -33,6 +33,7 @@ func ValidateXSD(reestr *io.Reader, xsdfile *os.File, filename string) error {
 	defer s.Free()
 
 	d, err := libxml2.Parse(bufxml)
+
 	if err != nil {
 		return errors.New(fmt.Sprintf("Ошибка чтения XML файла %s: %s", filename, err))
 	}
