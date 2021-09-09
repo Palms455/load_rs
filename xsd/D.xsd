@@ -75,9 +75,9 @@
                                 <xs:element name="DATE_OUT" type="xs:date" />
                                 <xs:element name="P_OTK" type="xs:string" />
                                 <xs:element name="CODE_USL" type="xs:string" />
-                                <xs:element name="TARIF"  type="money-type" />
+                                <xs:element name="TARIF" minOccurs="0" type="money-type" />
                                 <xs:element name="SUMV_USL" type="money-type" />
-                                <xs:element name="MR_USL_N"  maxOccurs="unbounded">
+                                <xs:element name="MR_USL_N" minOccurs="0" maxOccurs="unbounded">
                                   <xs:complexType>
                                     <xs:sequence>
                                       <xs:element name="MR_N" type="xs:string" />
@@ -86,7 +86,7 @@
                                     </xs:sequence>
                                   </xs:complexType>
                                 </xs:element>
-                                <xs:element name="PRVS"  type="xs:string" />
+                                <xs:element name="PRVS" minOccurs="0" type="xs:string" />
                                 <xs:element name="CODE_MD" minOccurs="0" type="xs:string" />
                                 <xs:element name="COMENTU" minOccurs="0" type="xs:string" />
                               </xs:sequence>
