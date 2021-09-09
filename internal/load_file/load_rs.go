@@ -100,14 +100,14 @@ func LoadRS(file string, i int) {
 			rs_data.XmlDecode(&buf, string([]rune(f.Name)[0]))
 		}
 	}
-	rs.ErrorMsg = map[string][]string{
-		"load_errors": errArray,
-	}
+
 	if len(errArray) == 0 {
 		rs.Status = "20"
 
 	} else {
 		rs.Status = "-1"
+		xsd_validation.TranslateFlcErrors(errArray)
+		rs.ErrorMsg = map[string][]string{"load_errors": errArray,}
 	}
 
 	dst := filepath.Join("uploads", rs.Rsfile)

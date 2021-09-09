@@ -247,7 +247,7 @@
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
-		<xs:unique name="uniqueNzap">
+		<xs:unique name="uniqueN_ZAP">
 			<xs:selector xpath="./ZAP" />
 			<xs:field xpath="N_ZAP" />
 		</xs:unique>
