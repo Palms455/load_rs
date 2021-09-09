@@ -16,14 +16,7 @@
               <xs:element name="Z_SL" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="IDCASE">
-                    <xs:simpleType>
-                      <xs:restriction base="xs:string">
-                        <xs:maxLength value="11" />
-                        <xs:minLength value="11" />
-                      </xs:restriction>
-                    </xs:simpleType>
-                    </xs:element>
+                    <xs:element name="IDCASE" type="xs:string" />
                     <xs:element name="VIDPOM" type="xs:string" />
                     <xs:element name="LPU" type="xs:string" />
                     <xs:element name="VBR" type="xs:string" />
