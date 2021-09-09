@@ -16,7 +16,14 @@
               <xs:element name="Z_SL" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="IDCASE" type="xs:string" />
+                    <xs:element name="IDCASE">
+                    <xs:simpleType>
+                      <xs:restriction base="xs:string">
+                        <xs:maxLength value="11" />
+                        <xs:minLength value="11" />
+                      </xs:restriction>
+                    </xs:simpleType>
+                    </xs:element>
                     <xs:element name="VIDPOM" type="xs:string" />
                     <xs:element name="LPU" type="xs:string" />
                     <xs:element name="VBR" type="xs:string" />
@@ -75,9 +82,9 @@
                                 <xs:element name="DATE_OUT" type="xs:date" />
                                 <xs:element name="P_OTK" type="xs:string" />
                                 <xs:element name="CODE_USL" type="xs:string" />
-                                <xs:element name="TARIF" minOccurs="0" type="money-type" />
+                                <xs:element name="TARIF"  type="money-type" />
                                 <xs:element name="SUMV_USL" type="money-type" />
-                                <xs:element name="MR_USL_N" minOccurs="0" maxOccurs="unbounded">
+                                <xs:element name="MR_USL_N"  maxOccurs="unbounded">
                                   <xs:complexType>
                                     <xs:sequence>
                                       <xs:element name="MR_N" type="xs:string" />
@@ -86,7 +93,7 @@
                                     </xs:sequence>
                                   </xs:complexType>
                                 </xs:element>
-                                <xs:element name="PRVS" minOccurs="0" type="xs:string" />
+                                <xs:element name="PRVS"  type="xs:string" />
                                 <xs:element name="CODE_MD" minOccurs="0" type="xs:string" />
                                 <xs:element name="COMENTU" minOccurs="0" type="xs:string" />
                               </xs:sequence>
@@ -137,7 +144,7 @@
         </xs:element>
       </xs:sequence>
     </xs:complexType>
-    <xs:unique name="uniqueNzap">
+    <xs:unique name="uniqueN_ZAP">
       <xs:selector xpath="./ZAP" />
       <xs:field xpath="N_ZAP" />
     </xs:unique>
