@@ -5,4 +5,10 @@
       <xs:pattern value="[+-]?\d{1,15}\.{0,1}\d{0,2}"/>
     </xs:restriction>
   </xs:simpleType>
+
+  <xs:simpleType name="integer-type">
+    <xs:restriction base="xs:integer">
+      <xs:pattern value="[0-9]{1,11}"/>
+    </xs:restriction>
+  </xs:simpleType>
 </xs:schema>

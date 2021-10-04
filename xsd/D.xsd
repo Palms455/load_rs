@@ -10,13 +10,13 @@
         <xs:element name="ZAP" maxOccurs="unbounded">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="N_ZAP" type="xs:string" />
+              <xs:element name="N_ZAP" type="integer-type" />
               <xs:element name="PR_NOV" type="xs:string" />
               <xs:element name="PACIENT" type="pacient_type" />
               <xs:element name="Z_SL" maxOccurs="unbounded">
                 <xs:complexType>
                   <xs:sequence>
-                    <xs:element name="IDCASE" type="xs:string" />
+                    <xs:element name="IDCASE" type="integer-type" />
                     <xs:element name="VIDPOM" type="xs:string" />
                     <xs:element name="LPU" type="xs:string" />
                     <xs:element name="VBR" type="xs:string" />
