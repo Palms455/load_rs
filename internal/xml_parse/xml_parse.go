@@ -53,7 +53,7 @@ type Rs struct {
 			VB_P string `xml:",omitempty" json:",omitempty"`
 			SL []struct {
 				SL_ID string
-				VID_HMP, METOD_HMP, LPU_1, PODR, PROFIL, PROFIL_K, DET, TAL_D, TAL_NUM, TAL_P, P_CEL, NHISTORY, P_PER, DATE_1, DATE_2, KD, DS0, DS1 string `xml:",omitempty" json:",omitempty"`
+				VID_HMP, METOD_HMP, LPU_1, PODR, PROFIL, PROFIL_K, DET, TAL_D, TAL_NUM, TAL_P, P_CEL, DISP, NHISTORY, P_PER, DATE_1, DATE_2, KD, DS0, DS1 string `xml:",omitempty" json:",omitempty"`
 				DS2, DS3 []string `xml:",omitempty" json:",omitempty"`
 				C_ZAB, DS1_PR, DS_ONK, PR_D_N, DN string `xml:",omitempty" json:",omitempty"`
 				CODE_MES1 []string `xml:",omitempty" json:",omitempty"`

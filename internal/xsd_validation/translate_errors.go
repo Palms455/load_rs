@@ -30,6 +30,7 @@ var ArrTranslate = []*TranslateXsd{
 	NewTranslate(`money-type`, "число с двумя знаками после запятой"),
 	NewTranslate(`snils-type`, "СНИЛС"),
 	NewTranslate(`xs:string`, "строка"),
+	NewTranslate(`integer-type`, "целое число"),
 	NewTranslate(`\[facet 'maxLength'\] The value has a length of ('\d+'); this exceeds the allowed maximum length of ('\d+')`, "Превышена допустимая длина (${2}) для данного тега ${1}"),
 	NewTranslate(`\[facet 'minLength'\] The value has a length of ('\d+'); this underruns the allowed minimum length of ('\d+')`, "Длина элемента (${1}) менее минимально допустимой (${2})"),
 	NewTranslate(`failed ...* EndTag: '</' not found`, "ошибка в структуре xml. Закрывающий тег '</' отсутствует"),
