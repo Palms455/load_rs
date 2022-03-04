@@ -3,7 +3,7 @@
 #CMD ["/main"]
 
 
-FROM golang:latest
+FROM golang:1-bullseye
 RUN apt-get update && apt-get install -y build-essential libxml2-dev libxmlsec1-dev 
 RUN mkdir /app 
 ADD . /app/ 
